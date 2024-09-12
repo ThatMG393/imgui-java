@@ -77,6 +77,25 @@ case "$VTYPE" in
         fi
         echo "SO file copied to /tmp/imgui/dst/libimgui-java64.so successfully"
         ;;
+    android)
+        echo "Running Gradle task for Android..."
+        ./gradlew imgui-binding:generateLibs -Denvs=android -Dfreetype=false
+        if [ $? -ne 0 ]; then
+            echo "Gradle task for Android failed"
+            exit 1
+        fi
+
+        echo "Checking if the generated SO file exists..."
+        check_file_exists /tmp/imgui/libsNative/android64/libimgui-java64.so
+
+        echo "Copying the generated SO file to the destination directory..."
+        cp /tmp/imgui/libsNative/android64/libimgui-java64.so /tmp/imgui/dst/libimgui-java64.so
+        if [ $? -ne 0 ]; then
+            echo "Failed to copy SO file to /tmp/imgui/dst/libimgui-java64.so"
+            exit 1
+        fi
+        echo "SO file copied to /tmp/imgui/dst/libimgui-java64.so successfully"
+        ;;
     macos)
         echo "Running Gradle task for macOS and macOS ARM..."
         ./gradlew imgui-binding:generateLibs -Denvs=macos,macosarm64 -Dfreetype=true
