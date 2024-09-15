@@ -78,6 +78,21 @@ mkdir -p lib tmp
 
 # Determine build process based on vendor type
 case "$VTYPE" in
+    android)
+        export NDK=/usr/local/lib/android/sdk/ndk/27.1.12297006
+        export TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64
+        export SYSROOT=$TOOLCHAIN/sysroot
+
+        export API=21
+        export TARGET=aarch64-linux-android
+        export CPU=arm64-v8a
+        export CC=$TOOLCHAIN/bin/$TARGET$API-clang
+
+        export AR=$TOOLCHAIN/bin/llvm-ar
+        export RANLIB=$TOOLCHAIN/bin/llvm-ranlib
+
+        build_freetype "-fPIC -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -O3 -DNDEBUG --target=$TARGET$API --gcc-toolchain=$TOOLCHAIN" "--host=$TARGET --disable-shared --enable-static --without-brotli --with-zlib=no --with-bzip2=no --with-png=no --with-harfbuzz=no --with-sysroot=$SYSROOT" "lib/libfreetype.a"
+        ;;
     windows)
         build_freetype "" "--host=x86_64-w64-mingw32 --prefix=/usr/x86_64-w64-mingw32" "lib/libfreetype.a"
         ;;
