@@ -30,7 +30,7 @@ switch (findProperty('deployType')) {
         libName = 'libimgui-java64.so'
         break
     case 'android':
-        packageName = 'imgui-binding-natives-android
+        packageName = 'imgui-binding-natives-android'
         packageDesc = 'Native binaries for imgui-java binding for Android'
         moduleName = 'imgui.natives.android'
         libName = 'libimgui-java64.so'
